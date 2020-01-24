@@ -14,10 +14,10 @@ import java.util.HashMap;
 public class JSONParser {
     public static final String LOG_TAG = JSONParser.class.getSimpleName();
 
-    private static ArrayList<Pie> pieList = new ArrayList<>();
-
-    public static void parseOperationsResponse(String data) {
+    public static ArrayList<Pie> parseOperationsResponse(String data) {
         Log.d(LOG_TAG, "parseOperationsResponse - PARSING");
+
+        ArrayList<Pie> pieList = new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(data);
@@ -65,10 +65,12 @@ public class JSONParser {
             }
 
             Log.d(LOG_TAG, "parseOperationsResponse - SUCCESS");
+            return pieList;
 
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d(LOG_TAG, "parseOperationsResponse - ERROR");
+            return null;
         }
     }
 }

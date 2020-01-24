@@ -20,9 +20,12 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.whip.analyticsdashboard.model.Pie;
 import com.whip.analyticsdashboard.network.JSONParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -31,18 +34,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     PieDataSet pieDataSet;
     PieData pieData;
 
+    ArrayList<Pie> pieList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pieChart = findViewById(R.id.piechart);
 
+        pieList = new ArrayList<>();
+
         getMockDashboard();
-        setChartView();
     }
 
     private void setChartView() {
-        pieDataSet = new PieDataSet(getTempValues(), "");
+        pieDataSet = new PieDataSet(getDynamicValues(), "");
         pieDataSet.setSliceSpace(4);
         pieDataSet.setColors(getPieChartColor());
 
@@ -59,15 +65,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         pieChart.getDescription().setEnabled(false);
         Legend chartLegend = pieChart.getLegend();
         chartLegend.setTextSize(12f);
+        chartLegend.setXEntrySpace(20);
 
         pieChart.invalidate();
     }
 
-    private ArrayList<PieEntry> getTempValues() {
+    private ArrayList<PieEntry> getDynamicValues() {
         ArrayList<PieEntry> dataValues = new ArrayList<>();
-        dataValues.add(new PieEntry(66.7f,"Labour"));
-        dataValues.add(new PieEntry(33.3f,"Product Services"));
-        return dataValues;
+
+        for (Pie pie : pieList) {
+            HashMap<String, Double> items = pie.getItems();
+
+            for (Map.Entry<String, Double> item : items.entrySet()) {
+                Double value = item.getValue();
+                String label = item.getKey();
+                dataValues.add(new PieEntry(value.floatValue(), label)); // (i.e 66.7f, "Labour")
+            }
+            return dataValues;
+        }
+        return null;
     }
 
     private int[] getPieChartColor() {
@@ -99,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
         Log.d(LOG_TAG, "onLoadFinished");
-        JSONParser.parseOperationsResponse(data);
+        pieList = JSONParser.parseOperationsResponse(data);
+        setChartView();
     }
 
     @Override
