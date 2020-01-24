@@ -2,13 +2,20 @@ package com.whip.analyticsdashboard.network;
 
 import android.util.Log;
 
+import com.whip.analyticsdashboard.model.Pie;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class JSONParser {
     public static final String LOG_TAG = JSONParser.class.getSimpleName();
-    
+
+    private static ArrayList<Pie> pieList = new ArrayList<>();
+
     public static void parseOperationsResponse(String data) {
         Log.d(LOG_TAG, "parseOperationsResponse - PARSING");
 
@@ -34,14 +41,24 @@ public class JSONParser {
                             Log.d(LOG_TAG, "description: " + description);
                             Log.d(LOG_TAG, "title: " + title);
 
+                            HashMap<String, Double> itemsMap = new HashMap<>();
+
                             JSONArray itemsArray = pieChartObject.getJSONArray("items");
                             for (int j = 0; j < itemsArray.length(); j++) {
                                 JSONObject itemsObject = itemsArray.getJSONObject(j);
                                 String key = itemsObject.getString("key");  // (i.e "Labour")
-                                String value = itemsObject.getString("value");  // (i.e 85.43)
+                                Double value = itemsObject.getDouble("value");  // (i.e 85.43)
                                 Log.d(LOG_TAG, "key: " + key);
                                 Log.d(LOG_TAG, "value: " + value);
+                                itemsMap.put(key, value);
                             }
+
+                            Pie pieItem = new Pie();
+                            pieItem.setChartType(chartType);
+                            pieItem.setDescription(description);
+                            pieItem.setTitle(title);
+                            pieItem.setItems(itemsMap);
+                            pieList.add(pieItem);
                         }
                     }
                 }
