@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     PieDataSet pieDataSet;
     PieData pieData;
 
+    TextView pieTitle;
+    TextView pieDescription;
+
     ArrayList<Pie> pieList;
 
     @Override
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pieChart = findViewById(R.id.piechart);
+        pieTitle = findViewById(R.id.textview_pie_title);
+        pieDescription = findViewById(R.id.textview_pie_description);
 
         pieList = new ArrayList<>();
 
@@ -74,14 +80,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ArrayList<PieEntry> dataValues = new ArrayList<>();
 
         for (Pie pie : pieList) {
-            HashMap<String, Double> items = pie.getItems();
+            pieTitle.setText(pie.getTitle());
+            pieDescription.setText(pie.getDescription());
 
+            HashMap<String, Double> items = pie.getItems();
             for (Map.Entry<String, Double> item : items.entrySet()) {
                 Double value = item.getValue();
                 String label = item.getKey();
                 dataValues.add(new PieEntry(value.floatValue(), label)); // (i.e 66.7f, "Labour")
             }
-            return dataValues;
+            return dataValues;  // TODO: For now just show one pie chart until RecyclerView is created
         }
         return null;
     }
