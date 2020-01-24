@@ -13,7 +13,7 @@ import java.net.URL;
 public class NetworkUtil {
     public static final String LOG_TAG = NetworkUtil.class.getSimpleName();
 
-    private static final String BASE_URL= "http://skyrim.whipmobility.io/v10/analytic/dashboard/operation/mock?";
+    private static final String BASE_URL= "https://skyrim.whipmobility.io/v10/analytic/dashboard/operation/mock?";
     public static final String QUERY_PARAM = "scope";
 
     static String getJobInfo(String queryString) {
