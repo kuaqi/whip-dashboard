@@ -78,7 +78,7 @@ public class PieAdapter extends RecyclerView.Adapter<PieAdapter.ViewHolder> {
 
             PieData pieData = new PieData(pieDataSet);
             pieData.setValueTextSize(16f);
-            pieData.setValueFormatter(new PercentFormatter());
+            pieData.setValueFormatter(new PercentFormatter(pieChart));
             pieData.setValueTextColor(Color.WHITE);
 
             pieChart.setData(pieData);
