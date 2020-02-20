@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -21,6 +23,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.whip.analyticsdashboard.adapter.PieAdapter;
 import com.whip.analyticsdashboard.model.Pie;
 import com.whip.analyticsdashboard.network.JSONParser;
 
@@ -124,9 +127,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
         Log.d(LOG_TAG, "onLoadFinished");
         pieList = JSONParser.parseOperationsResponse(data);
-        setChartView();
+        setPieChartView();
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<String> loader) { }
+
+    public void setPieChartView() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_pie);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        PieAdapter adapter = new PieAdapter(this, pieList);
+        recyclerView.setAdapter(adapter);
+    }
 }
