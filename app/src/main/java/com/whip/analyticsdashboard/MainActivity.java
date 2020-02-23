@@ -32,19 +32,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        getMockDashboard();
-
         compositeDisposable = new CompositeDisposable();
-        Retrofit retrofit = RetrofitClient.getInstance();
-        analyticsService = retrofit.create(AnalyticsService.class);
 
-        callAnalyticsService("LAST_7_DAYS");
+        getMockDashboard();
+    }
+
+    private void getMockDashboard() {
+        callAnalyticsService(NetworkUtil.FILTER_7_DAYS);
     }
 
     /**
      * Fetch data.
      */
     private void callAnalyticsService(String filterDuration) {
+        Retrofit retrofit = RetrofitClient.getInstance();
+        analyticsService = retrofit.create(AnalyticsService.class);
+
         compositeDisposable.add(analyticsService.getAnalyticsData(filterDuration)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
