@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         PieChartAdapter adapter = new PieChartAdapter(this, pieData);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_pie);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         GrowthAdapter adapter = new GrowthAdapter(this, jobData);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_growth);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }
 
