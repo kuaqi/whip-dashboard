@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         .subscribe(new Consumer<AnalyticsData>() {
             @Override
             public void accept(AnalyticsData analyticsData) throws Exception {
-//                displayPieChartData(analyticsData);
+                displayPieChartData(analyticsData);
                 displayGrowthData(analyticsData);
             }
         }));
