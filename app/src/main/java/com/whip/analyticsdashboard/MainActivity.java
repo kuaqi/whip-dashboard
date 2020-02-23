@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.whip.analyticsdashboard.adapter.GrowthAdapter;
 import com.whip.analyticsdashboard.adapter.PieChartAdapter;
 import com.whip.analyticsdashboard.model.AnalyticsData;
+import com.whip.analyticsdashboard.model.Job;
 import com.whip.analyticsdashboard.model.PieChart;
 import com.whip.analyticsdashboard.network.Retrofit.AnalyticsService;
 import com.whip.analyticsdashboard.network.Retrofit.RetrofitClient;
@@ -54,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         .subscribe(new Consumer<AnalyticsData>() {
             @Override
             public void accept(AnalyticsData analyticsData) throws Exception {
-                displayPieChartData(analyticsData);
+//                displayPieChartData(analyticsData);
+                displayGrowthData(analyticsData);
             }
         }));
     }
@@ -63,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
         List<PieChart> pieData = analyticsData.getResponse().getData().getAnalytics().getPieCharts();
         PieChartAdapter adapter = new PieChartAdapter(this, pieData);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_pie);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void displayGrowthData(AnalyticsData analyticsData) {
+        Job jobData = analyticsData.getResponse().getData().getAnalytics().getJob();
+        GrowthAdapter adapter = new GrowthAdapter(this, jobData);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_growth);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }

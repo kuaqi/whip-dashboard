@@ -41,4 +41,13 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/item_pie_card" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_growth"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="14dp"
+        tools:listitem="@layout/item_growth_card"
+    />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
