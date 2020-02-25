@@ -25,38 +25,38 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textview_growth_total"
+                android:id="@+id/textview_job_total"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Growth total"
+                android:text="Job total"
                 android:textSize="16sp"
                 android:textStyle="bold"
             />
 
             <TextView
-                android:id="@+id/textview_growth_average"
+                android:id="@+id/textview_job_average"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Growth average"
+                android:text="Job average"
                 android:textSize="16sp"
                 android:textStyle="bold"
             />
 
             <TextView
-                android:id="@+id/textview_growth_title"
+                android:id="@+id/textview_job_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Growth title"
+                android:text="Job title"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
             />
 
             <TextView
-                android:id="@+id/textview_growth_description"
+                android:id="@+id/textview_job_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Growth description"
+                android:text="Job description"
                 android:textSize="16sp"
             />
         </LinearLayout>
@@ -81,11 +81,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textview_growth"
+                    android:id="@+id/textview_job_growth"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Growth percentage"
+                    android:text="Job percentage"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                 />

@@ -18,24 +18,24 @@ import java.util.List;
 /**
  * A view adapter class to display growth rate of jobs performed.
  */
-public class GrowthAdapter extends RecyclerView.Adapter<GrowthAdapter.ViewHolder> {
+public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
     private Context context;
     private List<ItemsJob> itemsJobList;
 
-    public GrowthAdapter(Context context, Job job) {
+    public JobAdapter(Context context, Job job) {
         this.context = context;
         this.itemsJobList = job.getItems();
     }
 
     @NonNull
     @Override
-    public GrowthAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public JobAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_growth_card, parent, false));
+                .inflate(R.layout.item_job_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GrowthAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull JobAdapter.ViewHolder holder, int position) {
         ItemsJob currentItemsJob = itemsJobList.get(position);
         holder.setBindings(currentItemsJob);
     }
@@ -57,11 +57,11 @@ public class GrowthAdapter extends RecyclerView.Adapter<GrowthAdapter.ViewHolder
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtAverage = itemView.findViewById(R.id.textview_growth_average);
-            txtDescription = itemView.findViewById(R.id.textview_growth_description);
-            txtGrowth = itemView.findViewById(R.id.textview_growth);
-            txtTitle = itemView.findViewById(R.id.textview_growth_title);
-            txtTotal = itemView.findViewById(R.id.textview_growth_total);
+            txtAverage = itemView.findViewById(R.id.textview_job_average);
+            txtDescription = itemView.findViewById(R.id.textview_job_description);
+            txtGrowth = itemView.findViewById(R.id.textview_job_growth);
+            txtTitle = itemView.findViewById(R.id.textview_job_title);
+            txtTotal = itemView.findViewById(R.id.textview_job_total);
         }
 
         private void setBindings(ItemsJob currentItemsJob) {

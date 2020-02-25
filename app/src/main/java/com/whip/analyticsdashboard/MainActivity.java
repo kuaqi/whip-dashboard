@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.whip.analyticsdashboard.adapter.GrowthAdapter;
+import com.whip.analyticsdashboard.adapter.JobAdapter;
 import com.whip.analyticsdashboard.adapter.PieChartAdapter;
 import com.whip.analyticsdashboard.model.AnalyticsData;
 import com.whip.analyticsdashboard.model.Job;
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void accept(AnalyticsData analyticsData) throws Exception {
                 displayPieChartData(analyticsData);
-                displayGrowthData(analyticsData);
+                displayJobData(analyticsData);
             }
         }));
     }
@@ -71,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void displayGrowthData(AnalyticsData analyticsData) {
+    private void displayJobData(AnalyticsData analyticsData) {
         Job jobData = analyticsData.getResponse().getData().getAnalytics().getJob();
-        GrowthAdapter adapter = new GrowthAdapter(this, jobData);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_growth);
+        JobAdapter adapter = new JobAdapter(this, jobData);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_job);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
