@@ -28,6 +28,15 @@
             android:paddingTop="14dp"
             tools:listitem="@layout/item_pie_card"
         />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_service"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="14dp"
+            tools:listitem="@layout/item_service_card"
+        />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

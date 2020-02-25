@@ -9,9 +9,11 @@ import android.util.Log;
 
 import com.whip.analyticsdashboard.adapter.JobAdapter;
 import com.whip.analyticsdashboard.adapter.PieChartAdapter;
+import com.whip.analyticsdashboard.adapter.ServiceAdapter;
 import com.whip.analyticsdashboard.model.AnalyticsData;
 import com.whip.analyticsdashboard.model.Job;
 import com.whip.analyticsdashboard.model.PieChart;
+import com.whip.analyticsdashboard.model.Service;
 import com.whip.analyticsdashboard.network.Retrofit.AnalyticsService;
 import com.whip.analyticsdashboard.network.Retrofit.RetrofitClient;
 
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void accept(AnalyticsData analyticsData) throws Exception {
                 displayPieChartData(analyticsData);
                 displayJobData(analyticsData);
+                displayServiceData(analyticsData);
             }
         }));
     }
@@ -75,6 +78,15 @@ public class MainActivity extends AppCompatActivity {
         Job jobData = analyticsData.getResponse().getData().getAnalytics().getJob();
         JobAdapter adapter = new JobAdapter(this, jobData);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_job);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void displayServiceData(AnalyticsData analyticsData) {
+        Service serviceData = analyticsData.getResponse().getData().getAnalytics().getService();
+        ServiceAdapter adapter = new ServiceAdapter(this, serviceData);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_service);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
