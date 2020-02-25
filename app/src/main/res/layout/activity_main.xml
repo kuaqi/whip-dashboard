@@ -11,6 +11,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include layout="@layout/layout_rating"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_job"
             android:layout_width="match_parent"
