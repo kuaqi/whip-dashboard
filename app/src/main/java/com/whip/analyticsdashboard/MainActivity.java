@@ -1,6 +1,8 @@
 package com.whip.analyticsdashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,60 +33,38 @@ import com.whip.analyticsdashboard.model.Job;
 import com.whip.analyticsdashboard.model.PieChart;
 import com.whip.analyticsdashboard.model.Rating;
 import com.whip.analyticsdashboard.model.Service;
-import com.whip.analyticsdashboard.network.Retrofit.AnalyticsService;
-import com.whip.analyticsdashboard.network.Retrofit.RetrofitClient;
+import com.whip.analyticsdashboard.viewmodel.AnalyticsViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-
 public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    AnalyticsService analyticsService;
-    CompositeDisposable compositeDisposable;
+    AnalyticsViewModel analyticsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        compositeDisposable = new CompositeDisposable();
-
         getMockDashboard();
     }
 
     private void getMockDashboard() {
-        callAnalyticsService(NetworkUtil.FILTER_7_DAYS);
-    }
-
-    /**
-     * Fetch data.
-     */
-    private void callAnalyticsService(String filterDuration) {
-        Retrofit retrofit = RetrofitClient.getInstance();
-        analyticsService = retrofit.create(AnalyticsService.class);
-
-        compositeDisposable.add(analyticsService.getAnalyticsData(filterDuration)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<AnalyticsData>() {
+        analyticsViewModel = new ViewModelProvider(this).get(AnalyticsViewModel.class);
+        analyticsViewModel.getAllAnalytics().observe(this, new Observer<AnalyticsData>() {
             @Override
-            public void accept(AnalyticsData analyticsData) throws Exception {
+            public void onChanged(AnalyticsData analyticsData) {
                 displayPieChartData(analyticsData);
                 displayJobData(analyticsData);
                 displayServiceData(analyticsData);
                 displayRatingData(analyticsData);
                 displayLineChartData(analyticsData);
             }
-        }));
+        });
     }
 
     private void displayPieChartData(AnalyticsData analyticsData) {
@@ -246,11 +226,5 @@ public class MainActivity extends AppCompatActivity {
 
         lineChart.setData(lineData);
         lineChart.invalidate();
-    }
-
-    @Override
-    protected void onStop() {
-        compositeDisposable.clear();
-        super.onStop();
     }
 }
