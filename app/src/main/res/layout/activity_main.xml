@@ -13,6 +13,8 @@
 
         <include layout="@layout/layout_rating"/>
 
+        <include layout="@layout/item_linechart_card"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_job"
             android:layout_width="match_parent"

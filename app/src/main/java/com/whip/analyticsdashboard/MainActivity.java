@@ -11,11 +11,17 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.whip.analyticsdashboard.adapter.JobAdapter;
 import com.whip.analyticsdashboard.adapter.PieChartAdapter;
 import com.whip.analyticsdashboard.adapter.ServiceAdapter;
@@ -76,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 displayJobData(analyticsData);
                 displayServiceData(analyticsData);
                 displayRatingData(analyticsData);
+                displayLineChartData(analyticsData);
             }
         }));
     }
@@ -170,6 +177,75 @@ public class MainActivity extends AppCompatActivity {
         barData.setBarWidth(0.48f);                         // Set thickness of the bars
 
         ratingChart.invalidate();
+    }
+
+    private void displayLineChartData(AnalyticsData analyticsData) {
+        // Get data and set bindings
+        LineChart lineChart = (LineChart) findViewById(R.id.linechart);
+        TextView txtLineChartTitle = (TextView) findViewById(R.id.textview_linechart_title);
+        TextView txtLineChartDesc = (TextView) findViewById(R.id.textview_linechart_desc);
+
+        List<Entry> jobEntries = new ArrayList<>();
+        List<Entry> serviceEntries = new ArrayList<>();
+        List<ILineDataSet> lineDataSets = new ArrayList<>();
+
+
+        // Set data
+        txtLineChartTitle.setText("Jobs and Services");
+        txtLineChartDesc.setText("Total Jobs and Services");
+
+        jobEntries.add(new Entry(0,1));
+        jobEntries.add(new Entry(1,2));
+        jobEntries.add(new Entry(2,3));
+        jobEntries.add(new Entry(3,4));
+
+        serviceEntries.add(new Entry(0,2));
+        serviceEntries.add(new Entry(1,3));
+        serviceEntries.add(new Entry(2,2.5f));
+        serviceEntries.add(new Entry(3,3));
+
+        final String[] date = new String[] {"20-02", "21-02", "22-02", "23-02", "24-02", "25-02"};
+
+        LineDataSet jobDataSet = new LineDataSet(jobEntries, "Jobs");
+        LineDataSet serviceDataSet = new LineDataSet(serviceEntries, "Services");
+        lineDataSets.add(jobDataSet);
+        lineDataSets.add(serviceDataSet);
+        LineData lineData = new LineData(lineDataSets);
+
+
+        // Set line chart style
+        lineChart.getDescription().setEnabled(false);
+        lineChart.animateX(3000);
+
+        jobDataSet.setLineWidth(2f);
+        jobDataSet.setCircleRadius(3.6f);
+        jobDataSet.setDrawValues(false);
+        jobDataSet.setColor(Color.RED);
+        jobDataSet.setCircleColor(Color.RED);
+        jobDataSet.setMode(LineDataSet.Mode.LINEAR);
+        serviceDataSet.setLineWidth(2f);
+        serviceDataSet.setCircleRadius(3.6f);
+        serviceDataSet.setDrawValues(false);
+        serviceDataSet.setColor(Color.BLUE);
+        serviceDataSet.setCircleColor(Color.BLUE);
+        serviceDataSet.setMode(LineDataSet.Mode.LINEAR);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);      // Set the default top axis to bottom
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(date));
+
+        YAxis axisLeft = lineChart.getAxisLeft();
+        axisLeft.setDrawAxisLine(false);
+
+        YAxis axisRight = lineChart.getAxisRight();
+        axisRight.setDrawGridLines(false);
+        axisRight.setDrawAxisLine(false);
+        axisRight.setEnabled(false);
+
+        lineChart.setData(lineData);
+        lineChart.invalidate();
     }
 
     @Override
