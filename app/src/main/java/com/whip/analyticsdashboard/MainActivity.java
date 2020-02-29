@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayJobData(AnalyticsData analyticsData) {
         Job jobData = analyticsData.getResponse().getData().getAnalytics().getJob();
+        TextView txtHeadline = findViewById(R.id.textview_headline_job);
+        TextView txtSubheadline = findViewById(R.id.textview_subheadline_job);
+        txtHeadline.setText(jobData.getTitle());
+        txtSubheadline.setText(jobData.getDescription());
         JobAdapter adapter = new JobAdapter(this, jobData);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view_job);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -103,10 +107,12 @@ public class MainActivity extends AppCompatActivity {
         HorizontalBarChart ratingChart = (HorizontalBarChart) findViewById(R.id.rating_chart);
         TextView txtAverage = (TextView) findViewById(R.id.textview_average_rating);
         TextView txtSumRatings = (TextView) findViewById(R.id.textview_sum_ratings);
+        TextView txtHeadline = (TextView) findViewById(R.id.textview_headline_rating);
+        TextView txtSubheadline = (TextView) findViewById(R.id.textview_subheadline_rating);
 
         Rating ratingData = analyticsData.getResponse().getData().getAnalytics().getRating();
-        String title = ratingData.getTitle();
-        String description = ratingData.getDescription();
+        String headline = ratingData.getTitle();
+        String subheadline = ratingData.getDescription();
         Integer averageRating = ratingData.getAvg();
         ItemsRating itemsRating = ratingData.getItems();
 
@@ -125,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
         // Set data
         txtAverage.setText(String.valueOf(averageRating));
         txtSumRatings.setText(String.format("%s Ratings", String.valueOf(sumRatings)));
+        txtHeadline.setText(headline);
+        txtSubheadline.setText(subheadline);
         Integer maxRating = Collections.max(ratingList);
 
         BarDataSet barDataSet = new BarDataSet(entries, "");    // Load the data into the chart
