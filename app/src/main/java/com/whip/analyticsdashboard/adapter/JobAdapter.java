@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +55,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
         private TextView txtGrowth;
         private TextView txtTitle;
         private TextView txtTotal;
+        private ImageView ivArrowUp;
+        private ImageView ivArrowDown;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -62,12 +65,16 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
             txtGrowth = itemView.findViewById(R.id.textview_job_growth);
             txtTitle = itemView.findViewById(R.id.textview_job_title);
             txtTotal = itemView.findViewById(R.id.textview_job_total);
+            ivArrowUp = itemView.findViewById(R.id.imageview_job_up_arrow);
+            ivArrowDown = itemView.findViewById(R.id.imageview_job_down_arrow);
         }
 
         private void setBindings(ItemsJob currentItemsJob) {
             txtTitle.setText(currentItemsJob.getTitle());
-            txtGrowth.setText(String.valueOf(currentItemsJob.getGrowth() + "%"));
             txtDescription.setText(currentItemsJob.getDescription());
+            Integer growth = currentItemsJob.getGrowth();
+            txtGrowth.setText(String.valueOf(growth + "%"));
+            setGrowthIcon(growth);
 
             String strAverage = currentItemsJob.getAvg();
             if (strAverage != null) {
@@ -85,6 +92,13 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.ViewHolder> {
             } else {
                 txtTotal.setVisibility(View.GONE);
             }
+        }
+
+        private void setGrowthIcon(Integer percentageGrowth) {
+            if (percentageGrowth > 0)
+                ivArrowUp.setVisibility(View.VISIBLE);
+            else if (percentageGrowth < 0)
+                ivArrowDown.setVisibility(View.VISIBLE);
         }
     }
 }

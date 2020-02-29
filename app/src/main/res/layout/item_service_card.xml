@@ -64,14 +64,30 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="14dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageview_service_up_arrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tint="@android:color/holo_green_dark"
+                    android:visibility="gone"
+                    app:srcCompat="@android:drawable/arrow_up_float" />
+
+                <ImageView
+                    android:id="@+id/imageview_service_down_arrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tint="@android:color/holo_red_dark"
+                    android:visibility="gone"
+                    app:srcCompat="@android:drawable/arrow_down_float" />
             </LinearLayout>
 
             <LinearLayout

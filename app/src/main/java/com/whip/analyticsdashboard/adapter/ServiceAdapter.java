@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +55,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         private TextView txtGrowth;
         private TextView txtTitle;
         private TextView txtTotal;
+        private ImageView ivArrowUp;
+        private ImageView ivArrowDown;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -62,12 +65,16 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             txtGrowth = itemView.findViewById(R.id.textview_service_growth);
             txtTitle = itemView.findViewById(R.id.textview_service_title);
             txtTotal = itemView.findViewById(R.id.textview_service_total);
+            ivArrowUp = itemView.findViewById(R.id.imageview_service_up_arrow);
+            ivArrowDown = itemView.findViewById(R.id.imageview_service_down_arrow);
         }
 
         private void setBindings(ItemsService currentItemsService) {
             txtTitle.setText(currentItemsService.getTitle());
-            txtGrowth.setText(String.valueOf(currentItemsService.getGrowth() + "%"));
             txtDescription.setText(currentItemsService.getDescription());
+            Integer growth = currentItemsService.getGrowth();
+            txtGrowth.setText(String.valueOf(currentItemsService.getGrowth() + "%"));
+            setGrowthIcon(growth);
 
             String strAverage = currentItemsService.getAvg();
             if (strAverage != null) {
@@ -85,6 +92,13 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
             } else {
                 txtTotal.setVisibility(View.GONE);
             }
+        }
+
+        private void setGrowthIcon(Integer percentageGrowth) {
+            if (percentageGrowth > 0)
+                ivArrowUp.setVisibility(View.VISIBLE);
+            else if (percentageGrowth < 0)
+                ivArrowDown.setVisibility(View.VISIBLE);
         }
     }
 }
