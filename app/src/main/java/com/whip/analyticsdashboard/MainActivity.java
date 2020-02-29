@@ -28,11 +28,15 @@ import com.whip.analyticsdashboard.adapter.JobAdapter;
 import com.whip.analyticsdashboard.adapter.PieChartAdapter;
 import com.whip.analyticsdashboard.adapter.ServiceAdapter;
 import com.whip.analyticsdashboard.model.AnalyticsData;
+import com.whip.analyticsdashboard.model.Items;
+import com.whip.analyticsdashboard.model.ItemsLineChart;
 import com.whip.analyticsdashboard.model.ItemsRating;
 import com.whip.analyticsdashboard.model.Job;
 import com.whip.analyticsdashboard.model.PieChart;
 import com.whip.analyticsdashboard.model.Rating;
 import com.whip.analyticsdashboard.model.Service;
+import com.whip.analyticsdashboard.model.Value;
+import com.whip.analyticsdashboard.util.CustomDateUtils;
 import com.whip.analyticsdashboard.viewmodel.AnalyticsViewModel;
 
 import java.util.ArrayList;
@@ -169,22 +173,58 @@ public class MainActivity extends AppCompatActivity {
         List<Entry> serviceEntries = new ArrayList<>();
         List<ILineDataSet> lineDataSets = new ArrayList<>();
 
+        List<List<com.whip.analyticsdashboard.model.LineChart>> lineChartsList = analyticsData
+                .getResponse()
+                .getData()
+                .getAnalytics()
+                .getLineCharts();
+
+        com.whip.analyticsdashboard.model.LineChart nestedLineChart = lineChartsList.get(0).get(0);
+        List<ItemsLineChart> itemsLineChartList = nestedLineChart.getItems();
+
+
+        // Data massaging
+        List<Items> jobsItemsList = new ArrayList<>();
+        List<Items> servicesItemsList = new ArrayList<>();
+        String[] datesArray = new String[itemsLineChartList.size()];
+
+        for (int i = 0; i < itemsLineChartList.size(); i++) {
+            Items jobsItems = new Items();
+            Items servicesItems = new Items();
+            ItemsLineChart itemsLineChart = itemsLineChartList.get(i);
+
+            jobsItems.setDate(itemsLineChart.getKey());                 // "key" : "2020-02-23"
+            servicesItems.setDate(itemsLineChart.getKey());             // "key" : "2020-02-23"
+
+            // Format date to dd-MM
+            String stringDate = itemsLineChart.getKey();
+            stringDate = CustomDateUtils.formatDateDayMonthYear(stringDate);
+            datesArray[i] = stringDate.substring(0, 5);
+
+            List<Value> valueList = itemsLineChart.getValue();
+            for (Value value : valueList) {
+                if (value.getKey().equals("jobs")) {
+                    jobsItems.setKeyOperations(value.getKey());         // "key": "jobs"
+                    jobsItems.setValueOperations(value.getValue());     // "value": 12
+                    jobsItemsList.add(jobsItems);
+                } else if (value.getKey().equals("services")) {
+                    servicesItems.setKeyOperations(value.getKey());     // "key": "services"
+                    servicesItems.setValueOperations(value.getValue()); // "value": 19
+                    servicesItemsList.add(servicesItems);
+                }
+            }
+        }
+
 
         // Set data
-        txtLineChartTitle.setText("Jobs and Services");
-        txtLineChartDesc.setText("Total Jobs and Services");
+        txtLineChartTitle.setText(nestedLineChart.getTitle());          // "Jobs and Services"
+        txtLineChartDesc.setText(nestedLineChart.getDescription());     // "Total jobs and Services"
 
-        jobEntries.add(new Entry(0,1));
-        jobEntries.add(new Entry(1,2));
-        jobEntries.add(new Entry(2,3));
-        jobEntries.add(new Entry(3,4));
+        for (int i = 0; i < jobsItemsList.size(); i++)
+            jobEntries.add(new Entry(i, jobsItemsList.get(i).getValueOperations()));
 
-        serviceEntries.add(new Entry(0,2));
-        serviceEntries.add(new Entry(1,3));
-        serviceEntries.add(new Entry(2,2.5f));
-        serviceEntries.add(new Entry(3,3));
-
-        final String[] date = new String[] {"20-02", "21-02", "22-02", "23-02", "24-02", "25-02"};
+        for (int i = 0; i < servicesItemsList.size(); i++)
+            serviceEntries.add(new Entry(i, servicesItemsList.get(i).getValueOperations()));
 
         LineDataSet jobDataSet = new LineDataSet(jobEntries, "Jobs");
         LineDataSet serviceDataSet = new LineDataSet(serviceEntries, "Services");
@@ -214,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);      // Set the default top axis to bottom
         xAxis.setDrawAxisLine(true);
         xAxis.setDrawGridLines(false);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(date));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(datesArray));
 
         YAxis axisLeft = lineChart.getAxisLeft();
         axisLeft.setDrawAxisLine(false);
