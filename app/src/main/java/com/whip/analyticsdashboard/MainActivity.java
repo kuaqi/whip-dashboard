@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set line chart style
         lineChart.getDescription().setEnabled(false);
-        lineChart.animateX(3000);
+        lineChart.animateX(5000);
 
         jobDataSet.setLineWidth(2f);
         jobDataSet.setCircleRadius(3.6f);

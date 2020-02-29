@@ -13,8 +13,6 @@
 
         <include layout="@layout/layout_rating"/>
 
-        <include layout="@layout/item_linechart_card"/>
-
         <include layout="@layout/layout_headline_job"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -25,6 +23,8 @@
             android:paddingTop="14dp"
             tools:listitem="@layout/item_job_card"
         />
+
+        <include layout="@layout/item_linechart_card"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_pie"
